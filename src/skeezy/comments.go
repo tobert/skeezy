@@ -15,12 +15,11 @@ func ListComments(cass *gocql.Session, id uuid.UUID) (chan *Comment) {
 		iq := cass.Query(`SELECT id, parentId, created FROM comments WHERE postId=?`, id.Bytes()).Iter()
 		for {
 			c := Comment{}
-			ok := iq.Scan(&c.Id, &c.ParentId, &c.Created)
-			if !ok {
-				fmt.Printf("End of data? %s\n", ok)
+			if iq.Scan(&c.Id, &c.ParentId, &c.Created) {
+				cc <- &c
+			} else {
 				break
 			}
-			cc <- &c
 		}
 		if err := iq.Close(); err != nil {
 			log.Fatal(err)
