@@ -2,17 +2,28 @@ package skeezy
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"tux21b.org/v1/gocql"
 )
 
-func ListPosts(cass *gocql.Session, w http.ResponseWriter, r *http.Request) {
-	q := cass.Query(`SELECT id, body, created, authors, tags FROM posts`)
-	// TODO: loop & build a list to marshal to json
-	p := Post{}
-	q.Scan(&p.Id, &p.Body, &p.Created, &p.Authors, &p.Tags)
-	json, _ := json.Marshal(p)
-	w.Write(json)
+func ListPosts(cass *gocql.Session, w http.ResponseWriter, r *http.Request) []Post {
+	plist := make([]Post, 1)
+
+	iq := cass.Query(`SELECT id, body, created, authors, tags FROM posts`).Iter()
+	for {
+		p := Post{}
+		if iq.Scan(&p.Id, &p.Body, &p.Created, &p.Authors, &p.Tags) {
+			plist = append(plist, p)
+		} else {
+			break
+		}
+	}
+	if err := iq.Close(); err != nil {
+		log.Fatal(err)
+	}
+
+	return plist
 }
 
 func GetPost(cass *gocql.Session, id string, w http.ResponseWriter, r *http.Request) {
