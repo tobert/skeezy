@@ -34,7 +34,13 @@ func main() {
 
 	// a list of post ids
 	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
-		skeezy.ListPosts(cass, w, r)
+	/*
+		cc := skeezy.ListPosts(cass, getId(r, "/posts/"))
+		for post := range cc {
+			js, _ := json.Marshal(post)
+			w.Write(js)
+		}
+		*/
 	})
 
 	// deal with single posts, action depends on HTTP method
@@ -56,12 +62,15 @@ func main() {
 	// a list of comment ids
 	http.HandleFunc("/comments/", func(w http.ResponseWriter, r *http.Request) {
 		cc := skeezy.ListComments(cass, getId(r, "/comments/"))
-		fmt.Printf("Got a channel for ID %s\n", getId(r, "/comments/"))
+		// return a JSON list, avoid making extra copies of the data in memory
+		sep := []byte{'['}
 		for comment := range cc {
-			fmt.Printf("Got a comment\n")
+			w.Write(sep)
+			sep = []byte{',', '\n'}
 			js, _ := json.Marshal(comment)
 			w.Write(js)
 		}
+		w.Write([]byte{']', '\n'})
 	})
 
 	// deal with single comments, action depends on HTTP method

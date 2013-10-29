@@ -13,8 +13,6 @@ type Post struct {
 	Tags    []string  `json:tags`
 }
 
-type PostList []Post
-
 type Comment struct {
 	Id       uuid.UUID `json:id`
 	ParentId uuid.UUID `json:parent_id`
@@ -25,4 +23,8 @@ type Comment struct {
 	Body     string    `json:body`
 }
 
-type CommentList []Comment
+/*
+func (c *Comment) MarshalJSON() ([]byte, error) {
+	return []byte(`"T"`), nil
+}
+*/

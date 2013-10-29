@@ -10,15 +10,11 @@ import (
 
 func ListComments(cass *gocql.Session, id uuid.UUID) (chan *Comment) {
 	cc := make(chan *Comment)
-	fmt.Printf("A comment list was requested ...\n")
 
 	go func() {
-		fmt.Printf("Querying database ....(%s)\n", id)
-		iq := cass.Query(`SELECT id, parentId, created FROM comments WHERE postId=?`, id)).Iter()
+		iq := cass.Query(`SELECT id, parentId, created FROM comments WHERE postId=?`, id.Bytes()).Iter()
 		c := Comment{}
-		fmt.Printf("About to scan ...\n")
 		for iq.Scan(&c.Id, &c.ParentId, &c.Created) {
-			fmt.Printf("Comment: %v\n", c)
 			cc <- &c
 		}
 		if err := iq.Close(); err != nil {
