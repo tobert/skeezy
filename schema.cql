@@ -5,18 +5,21 @@ use skeezy;
 CREATE TABLE posts (
 	id      uuid,
 	body    varchar,
-	dttm    timestamp,
+	created timestamp,
 	authors list<varchar>,
 	tags    list<varchar>,
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE comments (
-	id      uuid,
-	post_id uuid,
-	dttm    timestamp,
-	author  varchar,
-	email   varchar,
-	body    varchar,
-	PRIMARY KEY(id, post_id)
+	id       uuid,
+	postId   uuid,
+	parentId uuid,
+	created  timestamp,
+	author   varchar,
+	email    varchar,
+	body     varchar,
+	PRIMARY KEY(id, postId)
 );
+
+CREATE INDEX commentsPostIndex ON comments (postid);
