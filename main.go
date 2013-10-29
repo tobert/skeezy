@@ -56,7 +56,9 @@ func main() {
 	// a list of comment ids
 	http.HandleFunc("/comments/", func(w http.ResponseWriter, r *http.Request) {
 		cc := skeezy.ListComments(cass, getId(r, "/comments/"))
+		fmt.Printf("Got a channel for ID %s\n", getId(r, "/comments/"))
 		for comment := range cc {
+			fmt.Printf("Got a comment\n")
 			js, _ := json.Marshal(comment)
 			w.Write(js)
 		}
