@@ -8,7 +8,7 @@ import (
 	"tux21b.org/v1/gocql/uuid"
 )
 
-func ListComments(cass *gocql.Session, id uuid.UUID) (chan *Comment) {
+func ListComments(cass *gocql.Session, id uuid.UUID) chan *Comment {
 	cc := make(chan *Comment)
 
 	go func() {
