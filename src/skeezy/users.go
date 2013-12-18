@@ -10,7 +10,7 @@ import (
 )
 
 func ListUsers(cass *gocql.Session) []User {
-	ulist := make([]User, 1)
+	ulist := make([]User, 0)
 
 	iq := cass.Query(`SELECT id, username, email, created, updated FROM users`).Iter()
 	for {
