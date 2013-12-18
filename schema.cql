@@ -2,6 +2,17 @@ CREATE KEYSPACE skeezy WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replica
 
 use skeezy;
 
+CREATE TABLE users (
+	id      uuid,
+	username varchar,
+	email    varchar,
+	created timestamp,
+	PRIMARY KEY(id)
+);
+
+CREATE INDEX userUsernameIndex ON users (username);
+CREATE INDEX userEmailIndex ON users (email);
+
 CREATE TABLE posts (
 	id      uuid,
 	body    varchar,

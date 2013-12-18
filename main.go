@@ -34,12 +34,12 @@ func main() {
 
 	// a list of post ids
 	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
-	/*
-		cc := skeezy.ListPosts(cass, getId(r, "/posts/"))
-		for post := range cc {
-			js, _ := json.Marshal(post)
-			w.Write(js)
-		}
+		/*
+			cc := skeezy.ListPosts(cass, getId(r, "/posts/"))
+			for post := range cc {
+				js, _ := json.Marshal(post)
+				w.Write(js)
+			}
 		*/
 	})
 
@@ -54,6 +54,22 @@ func main() {
 			skeezy.NewPost(cass, id, w, r)
 		case "DELETE":
 			skeezy.DelPost(cass, id, w, r)
+		default:
+			fmt.Fprintf(w, "Invalid method: '%s'\n", r.Method)
+		}
+	})
+
+	// user management routes
+	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		id := r.URL.Path[len("/users/"):]
+
+		switch r.Method {
+		case "GET":
+			skeezy.GetUser(cass, id, w, r)
+		case "PUT":
+			skeezy.NewUser(cass, id, w, r)
+		case "POST":
+			skeezy.UpdateUser(cass, id, w, r)
 		default:
 			fmt.Fprintf(w, "Invalid method: '%s'\n", r.Method)
 		}

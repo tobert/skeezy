@@ -5,12 +5,20 @@ import (
 	"tux21b.org/v1/gocql/uuid"
 )
 
+type User struct {
+	Id       uuid.UUID `json:id`
+	Username string    `json:username`
+	Email    string    `json:email`
+	Created  time.Time `json:created`
+}
+
 type Post struct {
 	Id      uuid.UUID `json:id`
 	Body    string    `json:body`
 	Created time.Time `json:created`
 	Authors []string  `json:authors`
 	Tags    []string  `json:tags`
+	UserID  uuid.UUID `json:user_id`
 }
 
 type Comment struct {
