@@ -31,9 +31,3 @@ type Comment struct {
 	Email    string    `json:email`
 	Body     string    `json:body`
 }
-
-/*
-func (c *Comment) MarshalJSON() ([]byte, error) {
-	return []byte(`"T"`), nil
-}
-*/

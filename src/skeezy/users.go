@@ -60,8 +60,10 @@ func NewUser(cass *gocql.Session, id string, w http.ResponseWriter, r *http.Requ
 
 func UpdateUser(cass *gocql.Session, id string, w http.ResponseWriter, r *http.Request) {
 	u := User{}
+
 	body := r.FormValue("user")
 	err := json.Unmarshal([]byte(body), &u)
+
 	if err == nil {
 		newUpdated := uuid.TimeUUID()
 		q := cass.Query(`UPDATE users username=?, email=?, updated=? WHERE id=? IF updated=?`)
