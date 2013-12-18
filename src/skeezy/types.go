@@ -10,6 +10,7 @@ type User struct {
 	Username string    `json:username`
 	Email    string    `json:email`
 	Created  time.Time `json:created`
+	Updated  uuid.UUID `json:updated`
 }
 
 type Post struct {

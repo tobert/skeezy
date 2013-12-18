@@ -32,17 +32,6 @@ func main() {
 		http.ServeFile(w, r, "./public/index.html")
 	})
 
-	// a list of post ids
-	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
-		/*
-			cc := skeezy.ListPosts(cass, getId(r, "/posts/"))
-			for post := range cc {
-				js, _ := json.Marshal(post)
-				w.Write(js)
-			}
-		*/
-	})
-
 	// deal with single posts, action depends on HTTP method
 	http.HandleFunc("/post/", func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/post/"):]
@@ -61,6 +50,18 @@ func main() {
 
 	// user management routes
 	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		users := skeezy.ListUsers(cass)
+		sep := []byte{'['}
+		for _, user := range users {
+			w.Write(sep)
+			sep = []byte{',', '\n'}
+			js, _ := json.Marshal(user)
+			w.Write(js)
+		}
+		w.Write([]byte{']', '\n'})
+	})
+
+	http.HandleFunc("/user/", func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/users/"):]
 
 		switch r.Method {

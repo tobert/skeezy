@@ -3,10 +3,11 @@ CREATE KEYSPACE skeezy WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replica
 use skeezy;
 
 CREATE TABLE users (
-	id      uuid,
+	id       uuid,
 	username varchar,
 	email    varchar,
-	created timestamp,
+	created  timestamp,
+  updated  timeuuid,
 	PRIMARY KEY(id)
 );
 
