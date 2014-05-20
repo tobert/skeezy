@@ -2,30 +2,30 @@ package skeezy
 
 import (
 	"time"
-	"tux21b.org/v1/gocql/uuid"
+	"github.com/gocql/gocql"
 )
 
 type User struct {
-	Id       uuid.UUID `json:id`
+	Id       gocql.UUID `json:id`
 	Username string    `json:username`
 	Email    string    `json:email`
 	Created  time.Time `json:created`
-	Updated  uuid.UUID `json:updated`
+	Updated  gocql.UUID `json:updated`
 }
 
 type Post struct {
-	Id      uuid.UUID `json:id`
+	Id      gocql.UUID `json:id`
 	Body    string    `json:body`
 	Created time.Time `json:created`
 	Authors []string  `json:authors`
 	Tags    []string  `json:tags`
-	UserID  uuid.UUID `json:user_id`
+	UserID  gocql.UUID `json:user_id`
 }
 
 type Comment struct {
-	Id       uuid.UUID `json:id`
-	ParentId uuid.UUID `json:parent_id`
-	PostId   uuid.UUID `json:post_id`
+	Id       gocql.UUID `json:id`
+	ParentId gocql.UUID `json:parent_id`
+	PostId   gocql.UUID `json:post_id`
 	Created  time.Time `json:created`
 	Author   string    `json:author`
 	Email    string    `json:email`

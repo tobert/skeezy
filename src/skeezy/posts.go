@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"tux21b.org/v1/gocql"
+	"github.com/gocql/gocql"
 )
 
 func ListPosts(cass *gocql.Session, w http.ResponseWriter, r *http.Request) []Post {

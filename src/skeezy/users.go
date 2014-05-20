@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"tux21b.org/v1/gocql"
-	"tux21b.org/v1/gocql/uuid"
+	"github.com/gocql/gocql"
 )
 
 func ListUsers(cass *gocql.Session) []User {
@@ -46,7 +45,7 @@ func NewUser(cass *gocql.Session, id string, w http.ResponseWriter, r *http.Requ
 	body := r.FormValue("user")
 	err := json.Unmarshal([]byte(body), &u)
 	if err == nil {
-		updated := uuid.TimeUUID()
+		updated := gocql.TimeUUID()
 		q := cass.Query(`INSERT INTO users (id, username, email, created, updated) VALUES (?, ?, ?, ?, ?) IF NOT EXISTS`)
 		q.Scan(&u.Id, &u.Username, &u.Email, &u.Created, updated)
 
@@ -65,7 +64,7 @@ func UpdateUser(cass *gocql.Session, id string, w http.ResponseWriter, r *http.R
 	err := json.Unmarshal([]byte(body), &u)
 
 	if err == nil {
-		newUpdated := uuid.TimeUUID()
+		newUpdated := gocql.TimeUUID()
 		q := cass.Query(`UPDATE users username=?, email=?, updated=? WHERE id=? IF updated=?`)
 		q.Scan(&u.Username, &u.Email, newUpdated, &u.Id, &u.Updated)
 		json, _ := json.Marshal(u) // bug

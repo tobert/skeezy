@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"tux21b.org/v1/gocql"
-	"tux21b.org/v1/gocql/uuid"
+	"github.com/gocql/gocql"
 )
 
-func ListComments(cass *gocql.Session, id uuid.UUID) chan *Comment {
+func ListComments(cass *gocql.Session, id gocql.UUID) chan *Comment {
 	cc := make(chan *Comment)
 
 	go func() {

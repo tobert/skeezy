@@ -5,8 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"tux21b.org/v1/gocql"
-	"tux21b.org/v1/gocql/uuid"
+	"github.com/gocql/gocql"
 )
 
 func main() {
@@ -110,9 +109,9 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func getId(r *http.Request, prefix string) uuid.UUID {
+func getId(r *http.Request, prefix string) gocql.UUID {
 	idarg := r.URL.Path[len(prefix):]
-	id, err := uuid.ParseUUID(idarg)
+	id, err := gocql.ParseUUID(idarg)
 	if err != nil {
 		fmt.Printf("Invalid ID: '%s'\n", idarg)
 	}
