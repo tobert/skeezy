@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-	"tux21b.org/v1/gocql"
-	"tux21b.org/v1/gocql/uuid"
+	"github.com/gocql/gocql"
 )
 
 func main() {
@@ -25,9 +24,9 @@ func main() {
 	tags := []string{"spam", "test", "keywords"}
 
 	for i := 0; i < 10000; i++ {
-		id := uuid.TimeUUID()
+		id := gocql.TimeUUID()
 		fmt.Printf("id: %s\n", id)
-		err = cass.Query(`INSERT INTO posts (id, authors, body, dttm, tags) VALUES (?, ?, ?, ?, ?)`, id, authors, body, created, tags).Exec()
+		err = cass.Query(`INSERT INTO posts (id, authors, body, created, tags) VALUES (?, ?, ?, ?, ?)`, id, authors, body, created, tags).Exec()
 		if err != nil {
 			log.Fatal(err)
 		}
