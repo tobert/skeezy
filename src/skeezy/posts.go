@@ -2,13 +2,13 @@ package skeezy
 
 import (
 	"encoding/json"
+	"github.com/gocql/gocql"
 	"log"
 	"net/http"
-	"github.com/gocql/gocql"
 )
 
-func ListPosts(cass *gocql.Session, w http.ResponseWriter, r *http.Request) []Post {
-	plist := make([]Post, 1)
+func ListPosts(cass *gocql.Session) PostList {
+	plist := make(PostList, 0)
 
 	iq := cass.Query(`SELECT id, body, created, authors, tags FROM posts`).Iter()
 	for {

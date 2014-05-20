@@ -3,9 +3,9 @@ package skeezy
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gocql/gocql"
 	"log"
 	"net/http"
-	"github.com/gocql/gocql"
 )
 
 func ListUsers(cass *gocql.Session) []User {

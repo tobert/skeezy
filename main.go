@@ -4,8 +4,8 @@ import (
 	"./src/skeezy"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"github.com/gocql/gocql"
+	"net/http"
 )
 
 func main() {
@@ -29,6 +29,18 @@ func main() {
 	// front page
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")
+	})
+
+	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
+		posts := skeezy.ListPosts(cass)
+
+		js, err := json.Marshal(posts)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Write(js)
 	})
 
 	// deal with single posts, action depends on HTTP method
